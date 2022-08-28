@@ -34,6 +34,15 @@ function handleNewCommentChange() {
     setNewCommentText(event.target.value)
 }
 
+function deleteComment(commentToDelete) {
+
+    const commentsWithoutDeleteOne = comments.filter(comment => {
+        return comment !== commentToDelete;
+    })
+
+    setComments(commentsWithoutDeleteOne);
+}
+
     return (
         <article className={styles.post}>
             <header>
@@ -47,15 +56,14 @@ function handleNewCommentChange() {
                 <time title={publicshedAtDateFormatted} dateTime={publicshedAt.toISOString()}>
                     {publicshedDateRelativeToNow}
                 </time>     
-                
             </header>
 
             <div className={styles.content}>
                 {content.map(line => {
                     if(line.type == 'paragraph') {
-                        return <p>{line.content}</p>
+                        return <p key={line.content}>{line.content}</p>
                     } else if(line.type == 'link') {
-                        return <p><a href=""></a>{line.content}</p>
+                        return <p key={line.content}><a href=""></a>{line.content}</p>
                     }
                 })}  
             </div>
@@ -77,7 +85,12 @@ function handleNewCommentChange() {
 
             <div className={styles.commentList}>
                {comments.map(comment => {
-                    return <Comment content={comment}/>
+                    return (
+                        <Comment 
+                            key={comment} 
+                            content={comment} 
+                            onDeleteComment={deleteComment}
+                        />)
                })}
             </div>
         </article>
