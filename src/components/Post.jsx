@@ -31,6 +31,8 @@ function handleCreatNewComment() {
 }
 
 function handleNewCommentChange() {
+
+    event.target.setCustomValidity('')
     setNewCommentText(event.target.value)
 }
 
@@ -42,6 +44,13 @@ function deleteComment(commentToDelete) {
 
     setComments(commentsWithoutDeleteOne);
 }
+
+function handleNewCommentInvalid() {
+    event.target.setCustomValidity('Esse campo é obrigatório!')
+
+}
+
+const isNewCommentImput = newCommentText.length === 0;
 
     return (
         <article className={styles.post}>
@@ -73,13 +82,17 @@ function deleteComment(commentToDelete) {
 
                 <textarea
                     name='comment'
-                    placeholder='Deixe um comentário'
+                    placeholder='Deixe seu comentário'
                     value={newCommentText}
                     onChange={handleNewCommentChange}
+                    onInvalid={handleNewCommentInvalid}
+                    required
                 />
 
                 <footer>
-                    <button type='submit'>Publicar</button>
+                    <button type='submit' disabled={isNewCommentImput}>
+                        Publicar
+                    </button>
                 </footer>
             </form>
 
